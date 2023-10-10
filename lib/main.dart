@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({Key? key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -36,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('EmanaFloral'),
       ),
       body: Container(
-        color: Colors.grey[200], // Cambiar el color de fondo aquí
+        color: Colors.grey[200],
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: _showLogin ? MyLoginForm() : MyRegistrationForm(),
@@ -83,7 +87,8 @@ class MyLoginForm extends StatelessWidget {
         SizedBox(height: 16.0),
         ElevatedButton(
           onPressed: () {
-            // Implementar la lógica de inicio de sesión aquí
+            // Implementar la lógica de inicio de sesión aquí utilizando el servicio de Firebase
+            FirebaseService().signInWithEmailAndPassword("email", "password");
           },
           child: Text('Iniciar sesión'),
         ),
@@ -127,7 +132,9 @@ class MyRegistrationForm extends StatelessWidget {
         SizedBox(height: 16.0),
         ElevatedButton(
           onPressed: () {
-            // Implementar la lógica de registro aquí
+            // Implementar la lógica de registro aquí utilizando el servicio de Firebase
+            FirebaseService()
+                .createUserWithEmailAndPassword("email", "password");
           },
           child: Text('Registrarse'),
         ),
